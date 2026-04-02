@@ -1,0 +1,6 @@
+price_monitor.db
+__pycache__/
+*.pyc
+node_modules/
+frontend/dist/
+.env
