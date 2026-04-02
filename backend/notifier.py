@@ -8,8 +8,13 @@ def send_wechat(sendkey: str, title: str, content: str) -> bool:
     if not key:
         return False
     try:
-        url = f"https://api.day.app/{key}/{requests.utils.quote(title)}/{requests.utils.quote(content)}"
-        resp = requests.get(url, timeout=10)
+        url = "https://api.day.app/push"
+        resp = requests.post(url, json={
+            "device_key": key,
+            "title": title,
+            "body": content,
+            "sound": "default",
+        }, timeout=10)
         return resp.json().get("code") == 200
     except Exception:
         return False
