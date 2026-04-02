@@ -1,12 +1,17 @@
 import requests
 
 def send_wechat(sendkey: str, title: str, content: str) -> bool:
-    """通过 Server酱 发送微信通知"""
+    """通过 PushDeer 发送微信通知"""
     if not sendkey:
         return False
     try:
-        url = f"https://sctapi.ftqq.com/{sendkey}.send"
-        resp = requests.post(url, data={"title": title, "desp": content}, timeout=10)
+        url = "https://api2.pushdeer.com/message/push"
+        resp = requests.post(url, data={
+            "pushkey": sendkey,
+            "title": title,
+            "desp": content,
+            "type": "markdown"
+        }, timeout=10)
         return resp.json().get("code") == 0
     except Exception:
         return False

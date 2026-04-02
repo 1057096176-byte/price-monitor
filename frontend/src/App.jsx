@@ -147,9 +147,9 @@ function SettingsPage({ onBack }) {
       </div>
       <div className="p-4 space-y-4">
         <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-          <h3 className="font-medium text-gray-900 mb-1">微信通知（Server酱）</h3>
+          <h3 className="font-medium text-gray-900 mb-1">微信通知（PushDeer）</h3>
           <p className="text-xs text-gray-400 mb-3">
-            前往 <a href="https://sct.ftqq.com" target="_blank" className="text-blue-500">sct.ftqq.com</a> 微信扫码登录，复制 SendKey 填入下方
+            前往 <a href="http://pushdeer.com" target="_blank" className="text-blue-500">pushdeer.com</a> 微信扫码登录，在「Key」页面复制 PushKey 填入下方（完全免费）
           </p>
           <input value={form.sendkey} onChange={e => setForm({ ...form, sendkey: e.target.value })}
             placeholder="SCT…"
