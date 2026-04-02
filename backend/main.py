@@ -9,7 +9,7 @@ import os
 
 from database import get_db, Product, PriceHistory, Settings
 from scraper import fetch_price, detect_platform
-from notifier import send_wechat
+from notifier import send_wechat, BARK_KEY
 from scheduler import start_scheduler, stop_scheduler, check_all_prices
 
 app = FastAPI(title="价格监控")
@@ -128,8 +128,9 @@ class SettingsRequest(BaseModel):
 def get_settings(db: Session = Depends(get_db)):
     rows = db.query(Settings).all()
     data = {r.key: r.value for r in rows}
+    # 如果数据库没有 sendkey，返回预置的 Bark Key
     return {
-        "sendkey": data.get("sendkey", ""),
+        "sendkey": data.get("sendkey", BARK_KEY),
         "taobao_cookie": data.get("taobao_cookie", ""),
     }
 
@@ -149,11 +150,12 @@ def save_settings(req: SettingsRequest, db: Session = Depends(get_db)):
 @app.post("/api/settings/test-notify")
 def test_notify(db: Session = Depends(get_db)):
     row = db.query(Settings).filter(Settings.key == "sendkey").first()
-    if not row or not row.value:
-        raise HTTPException(status_code=400, detail="请先填写 Server酱 SendKey")
-    ok = send_wechat(row.value, "✅ 价格监控测试", "微信通知配置成功！价格变动时你会收到提醒。")
+    key = (row.value if row and row.value else BARK_KEY)
+    if not key:
+        raise HTTPException(status_code=400, detail="请先填写 Bark Key")
+    ok = send_wechat(key, "✅ 价格监控测试", "Bark 通知配置成功！价格变动时你会收到提醒。")
     if not ok:
-        raise HTTPException(status_code=400, detail="发送失败，请检查 SendKey 是否正确")
+        raise HTTPException(status_code=400, detail="发送失败，请检查 Bark Key 是否正确")
     return {"ok": True}
 
 # ── 前端静态文件 ──────────────────────────────────────

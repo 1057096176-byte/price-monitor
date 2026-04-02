@@ -152,7 +152,7 @@ function SettingsPage({ onBack }) {
             App Store 下载 <span className="text-blue-500">Bark</span>，打开后复制设备 Key 填入下方（已预填你的 Key，可直接测试）
           </p>
           <input value={form.sendkey} onChange={e => setForm({ ...form, sendkey: e.target.value })}
-            placeholder="SCT…"
+            placeholder="粘贴你的 Bark Key…"
             className="w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-400" />
           <button onClick={handleTest} disabled={testing}
             className="mt-2 w-full py-2.5 bg-green-50 text-green-600 rounded-xl text-sm font-medium disabled:opacity-50">
