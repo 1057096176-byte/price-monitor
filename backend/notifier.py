@@ -1,18 +1,16 @@
 import requests
 
+BARK_KEY = "geyR9EoHhePS4c27EJACo"
+
 def send_wechat(sendkey: str, title: str, content: str) -> bool:
-    """通过 PushDeer 发送微信通知"""
-    if not sendkey:
+    """通过 Bark 发送手机通知"""
+    key = sendkey or BARK_KEY
+    if not key:
         return False
     try:
-        url = "https://api2.pushdeer.com/message/push"
-        resp = requests.post(url, data={
-            "pushkey": sendkey,
-            "title": title,
-            "desp": content,
-            "type": "markdown"
-        }, timeout=10)
-        return resp.json().get("code") == 0
+        url = f"https://api.day.app/{key}/{requests.utils.quote(title)}/{requests.utils.quote(content)}"
+        resp = requests.get(url, timeout=10)
+        return resp.json().get("code") == 200
     except Exception:
         return False
 
